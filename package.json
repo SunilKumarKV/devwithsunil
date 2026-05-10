@@ -1,0 +1,29 @@
+{
+  "name": "devwithsunil",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+  "frontend": "cd frontend && npm run dev",
+  "backend": "cd backend && npm run dev",
+  "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+  "build": "cd frontend && npm run build",
+  "start": "cd backend && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SunilKumarKV/devwithsunil.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SunilKumarKV/devwithsunil/issues"
+  },
+  "homepage": "https://github.com/SunilKumarKV/devwithsunil#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
