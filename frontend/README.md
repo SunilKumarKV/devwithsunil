@@ -251,8 +251,8 @@ This project is open source and available under the [MIT License](LICENSE).
 **DevWithSunil**
 
 - Website: [devwithsunil.com](https://devwithsunil.vercel.app)
-- YouTube: [@DevWithSunil](https://youtube.com/@DevWithSunil)
-- Email: contact@devwithsunil.com
+- YouTube: [@DevWithSunil](https://www.youtube.com/@DevWithSunilTech)
+- Email: devwithsunilyt@gmail.com
 
 ---
 

@@ -48,7 +48,7 @@ exports.createPost = async (req, res, next) => {
       });
     }
 
-    const { slug, title, tag, date, excerpt, content, read_time } = req.body;
+    const { slug, title, tag, date, excerpt, content, read_time, status = "draft", cover_image = null } = req.body;
 
     // Validate content length
     if (content.length < 10) {
@@ -94,6 +94,8 @@ exports.createPost = async (req, res, next) => {
       excerpt: sanitizedExcerpt,
       content: sanitizedContent,
       read_time,
+      status,
+      cover_image,
     });
 
     return res.status(201).json({ status: "success", data: result.rows[0] });

@@ -22,6 +22,11 @@ router.post(
     body("read_time")
       .isInt({ min: 1 })
       .withMessage("Read time must be an integer in minutes"),
+    body("status")
+      .optional()
+      .isIn(["draft", "published"])
+      .withMessage("Status must be draft or published"),
+    body("cover_image").optional({ nullable: true }).isURL().withMessage("Cover image must be a valid URL"),
   ],
   blogController.createPost,
 );

@@ -95,6 +95,18 @@ export const api = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+
+  loginAdmin: (data: { email: string; password: string }) =>
+    request<{ status: string; data: { user: { id: number; name: string; email: string; role: string }; token: string } }>("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  getAdminDashboard: (token: string) =>
+    request<{ status: string; data: { stats: Record<string, number>; recentMessages: unknown[]; recentSubscribers: unknown[] } }>("/api/admin/dashboard", {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
 };
 
 export { ApiError };

@@ -10,9 +10,11 @@ import NewsletterSection from "@/components/NewsletterSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import SEO from "@/components/SEO";
 
 const Index = () => (
   <div className="min-h-screen bg-background">
+    <SEO />
     <Header />
     <main>
       <HeroSection />

@@ -50,7 +50,7 @@ const HeroSection = () => (
           className="flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <Button variant="neon" size="lg" asChild>
-            <a href="https://youtube.com/@DevWithSunil" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.youtube.com/@DevWithSunilTech" target="_blank" rel="noopener noreferrer">
               <Play className="h-5 w-5" /> Watch on YouTube
             </a>
           </Button>

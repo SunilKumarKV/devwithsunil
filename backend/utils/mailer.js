@@ -49,8 +49,8 @@ const safeSend = async (mailOptions) => {
 
 exports.sendContactNotification = async ({ name, email, message }) => {
   const mailOptions = {
-    from: `DevWithSunil Website <${EMAIL_USER || "no-reply@devwithsunil.com"}>`,
-    to: EMAIL_TO || "no-reply@devwithsunil.com",
+    from: `DevWithSunil Website <${EMAIL_USER || "devwithsunilyt@gmail.com"}>`,
+    to: EMAIL_TO || "devwithsunilyt@gmail.com",
     subject: `New contact message from ${name}`,
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong><br>${message.replace(/\n/g, "<br>")}</p>`,
@@ -61,7 +61,7 @@ exports.sendContactNotification = async ({ name, email, message }) => {
 
 exports.sendNewsletterWelcome = async (email) => {
   const mailOptions = {
-    from: `DevWithSunil <${EMAIL_USER || "no-reply@devwithsunil.com"}>`,
+    from: `DevWithSunil <${EMAIL_USER || "devwithsunilyt@gmail.com"}>`,
     to: email,
     subject: "Welcome to DevWithSunil Newsletter!",
     text: `Thank you for subscribing to the DevWithSunil newsletter!\n\nYou'll receive updates on the latest blog posts, tutorials, and tech insights.\n\nBest regards,\nSunil Kumar`,

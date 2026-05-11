@@ -38,7 +38,7 @@ const Header = () => {
           ))}
           <Button variant="neon" size="sm" className="ml-3" asChild>
             <a
-              href="https://youtube.com/@DevWithSunil"
+              href="https://www.youtube.com/@DevWithSunilTech"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -71,7 +71,7 @@ const Header = () => {
             ))}
             <Button variant="neon" size="sm" className="mt-2" asChild>
               <a
-                href="https://youtube.com/@DevWithSunil"
+                href="https://www.youtube.com/@DevWithSunilTech"
                 target="_blank"
                 rel="noopener noreferrer"
               >

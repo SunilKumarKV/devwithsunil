@@ -51,7 +51,7 @@ const YoutubeSection = () => {
               Add real YouTube video records in your database. Placeholder cards were removed.
             </p>
             <Button asChild variant="neon" className="mt-5">
-              <a href="https://youtube.com/@DevWithSunil" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.youtube.com/@DevWithSunilTech" target="_blank" rel="noopener noreferrer">
                 Open Channel <ExternalLink className="h-4 w-4" />
               </a>
             </Button>

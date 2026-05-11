@@ -3,7 +3,7 @@ import { Youtube, Github, Linkedin, Twitter } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 
 const socials = [
-  { icon: Youtube, label: "YouTube", href: "https://youtube.com/@DevWithSunil", color: "hover:text-red-400" },
+  { icon: Youtube, label: "YouTube", href: "https://www.youtube.com/@DevWithSunilTech", color: "hover:text-red-400" },
   { icon: Github, label: "GitHub", href: "https://github.com/SunilKumarKV", color: "hover:text-foreground" },
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/sunilkumarkv44", color: "hover:text-blue-400" },
   { icon: Twitter, label: "Twitter", href: "https://twitter.com/Sunil_KVB", color: "hover:text-sky-400" },
@@ -61,10 +61,10 @@ const ContactSection = () => (
             <p className="text-sm text-muted-foreground">
               📧 For business inquiries:{" "}
               <a
-                href="mailto:hello@devwithsunil.com"
+                href="mailto:devwithsunilyt@gmail.com"
                 className="text-primary font-mono hover:underline"
               >
-                hello@devwithsunil.com
+                devwithsunilyt@gmail.com
               </a>
             </p>
           </div>

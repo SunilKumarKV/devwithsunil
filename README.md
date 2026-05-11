@@ -1,137 +1,211 @@
-# DevWithSunil - AI & Coding Tutorials Website
+# DevWithSunil - AI, Coding & Full Stack Learning Platform
 
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![ShadCN/UI](https://img.shields.io/badge/ShadCN%2FUI-000000?style=for-the-badge&logo=shadcn&logoColor=white)](https://ui.shadcn.com/)
+DevWithSunil is a production-focused full-stack learning platform for coding tutorials, AI tools, technical blogs, project showcases, newsletter subscriptions, and developer community updates.
 
-A modern, responsive personal website and portfolio for DevWithSunil, featuring AI and coding tutorials, project showcases, blog posts, and community resources.
+## Live Website
 
-## 🌟 About
+https://devwithsunil.vercel.app
 
-DevWithSunil is an educational platform dedicated to simplifying AI tools, coding, and technology for everyone. From beginner-friendly tutorials to real-world projects, we help developers of all levels master modern tech stacks and AI tools.
+## YouTube Channel
 
-### ✨ Key Features
+https://www.youtube.com/@DevWithSunilTech
 
-- **🎥 YouTube Integration**: Direct links to video tutorials and content
-- **📚 Tutorials Section**: Comprehensive coding and AI guides
-- **🚀 Projects Showcase**: Real-world project examples and demos
-- **📝 Blog**: In-depth articles on AI tools and development
-- **💬 Testimonials**: Community feedback and success stories
-- **📧 Newsletter**: Stay updated with latest content
-- **📱 Responsive Design**: Optimized for all devices
-- **⚡ Fast Performance**: Built with Vite for lightning-fast loading
-- **🎨 Modern UI**: Beautiful design with Tailwind CSS and ShadCN/UI
+## Contact
 
-## 🛠️ Tech Stack
+devwithsunilyt@gmail.com
 
-- **Frontend Framework**: React 18 with TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS with custom animations
-- **UI Components**: ShadCN/UI (Radix UI primitives)
-- **Routing**: React Router
-- **State Management**: React Query for server state
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Testing**: Vitest + Playwright
-- **Package Manager**: Bun
+## About
 
-## 🚀 Getting Started
+DevWithSunil helps beginners and developers learn modern web development through real-world projects, production-level coding tutorials, UI/UX breakdowns, AI tools, and full-stack development workflows.
+
+## Key Features
+
+- YouTube video integration from real backend data
+- Technical blog system with database-powered posts
+- Blog detail pages with dynamic SEO support
+- Project showcase for real portfolio projects
+- Newsletter subscription API
+- Contact form API with email notification support
+- Admin dashboard route and protected admin API
+- SEO component with Open Graph and Twitter metadata
+- Sitemap and robots.txt for search indexing
+- Vercel Analytics integration
+- Responsive dark modern UI
+- PostgreSQL database schema
+- JWT authentication and admin role protection
+- Empty states instead of fake/dummy content
+
+## Tech Stack
+
+### Frontend
+
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- ShadCN UI
+- React Router
+- React Query
+- Framer Motion
+- React Helmet Async
+- Vercel Analytics
+
+### Backend
+
+- Node.js
+- Express.js
+- PostgreSQL
+- JWT Authentication
+- Nodemailer
+- Helmet
+- CORS
+- Express Validator
+- Swagger Docs
+
+## Folder Structure
+
+```txt
+devwithsunil
+├── frontend
+│   ├── public
+│   │   ├── robots.txt
+│   │   └── sitemap.xml
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── lib
+│   │   └── main.tsx
+│   └── package.json
+├── backend
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── sql
+│   └── server.js
+└── README.md
+```
+
+## Environment Variables
+
+### Frontend
+
+Create `frontend/.env`:
+
+```env
+VITE_API_URL=http://localhost:5000
+VITE_CONTACT_EMAIL=devwithsunilyt@gmail.com
+VITE_YOUTUBE_URL=https://www.youtube.com/@DevWithSunilTech
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+### Backend
+
+Create `backend/.env`:
+
+```env
+NODE_ENV=development
+PORT=5000
+APP_NAME=DevWithSunil
+CORS_ORIGIN=http://localhost:5173
+DATABASE_URL=postgresql://username:password@host:5432/devwithsunil
+JWT_SECRET=replace_with_a_long_random_secret
+JWT_EXPIRATION=4h
+ALLOW_PUBLIC_REGISTRATION=true
+SWAGGER_ENABLED=true
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_SECURE=false
+EMAIL_USER=devwithsunilyt@gmail.com
+EMAIL_PASS=your_google_app_password
+EMAIL_TO=devwithsunilyt@gmail.com
+```
+
+## Installation
+
+```bash
+git clone https://github.com/SunilKumarKV/devwithsunil.git
+cd devwithsunil
+npm install
+cd frontend && npm install
+cd ../backend && npm install
+```
+
+## Database Setup
+
+```bash
+cd backend
+psql "$DATABASE_URL" -f sql/init.sql
+```
+
+## Run Locally
+
+From the root folder:
+
+```bash
+npm run dev
+```
+
+Frontend: `http://localhost:5173`  
+Backend: `http://localhost:5000/api`
+
+## Important Routes
+
+### Frontend
+
+- `/` - Home page
+- `/blog` - Blog list
+- `/blog/:slug` - Blog detail
+- `/admin` - Admin dashboard
+
+### Backend
+
+- `GET /api/health`
+- `POST /api/auth/login`
+- `GET /api/blog/posts`
+- `POST /api/blog/posts` - admin only
+- `GET /api/videos`
+- `POST /api/contact`
+- `POST /api/newsletter/subscribe`
+- `GET /api/admin/dashboard` - admin only
 
 
-## ✨ Recent Improvements
+## Deployment
 
-### 🚀 Performance & PWA
+### Frontend on Vercel
 
-- **PWA Support**: Added web app manifest for installable experience
-- **Performance Optimization**: Preconnect tags for YouTube and backend APIs
-- **Error Boundary**: Graceful error handling with user-friendly error pages
+- Root directory: `frontend`
+- Framework: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
 
-### 🔒 Security & Quality
+### Backend on Render/Railway
 
-- **TypeScript Strict Mode**: Enhanced type safety and code quality
-- **Security Headers**: Basic security headers in development
-- **Environment Validation**: Runtime checks for required environment variables
-- **Improved Error Handling**: Better API error feedback instead of silent failures
+- Root directory: `backend`
+- Start command: `npm start`
+- Add PostgreSQL database URL
+- Add all backend environment variables
 
-### ♿ Accessibility
+## Roadmap
 
-- **ARIA Labels**: Added proper accessibility labels for interactive elements
-- **Form Validation**: Client-side validation with error messages and ARIA attributes
-- **Keyboard Navigation**: Improved focus management and screen reader support
+- Full CRUD admin pages
+- Markdown blog editor
+- YouTube API auto-sync
+- Project CRUD management
+- Newsletter email campaigns
+- Blog category and search filters
+- Analytics dashboard
+- Course/tutorial module
+- AI-powered blog summaries
+- Custom domain `devwithsunil.com`
 
-### 🧪 Testing & Development
+## Author
 
-- **Unit Tests**: Basic test coverage for form validation and API functions
-- **Environment Configuration**: `.env.example` for easy setup
-- **SEO Enhancements**: Sitemap.xml and improved robots.txt
+Sunil Kumar  
+DevWithSunil
 
-## 🎨 Customization
-
-### Styling
-
-The project uses Tailwind CSS with custom CSS variables for theming. Key files:
-
-- `tailwind.config.ts` - Tailwind configuration
-- `src/index.css` - Global styles and CSS variables
-- `src/App.css` - Component-specific styles
-
-### Content Management
-
-- **Blog Posts**: Edit `src/data/blogPosts.ts`
-- **Projects**: Modify `src/components/ProjectsSection.tsx`
-- **Tutorials**: Update `src/components/TutorialsSection.tsx`
-- **Testimonials**: Edit `src/components/TestimonialsSection.tsx`
-
-## 📱 Features Overview
-
-### Hero Section
-
-- Animated introduction with call-to-action buttons
-- Links to YouTube channel and tutorials
-
-### About Section
-
-- Personal introduction and mission statement
-- Key highlights: AI Tools, Full-Stack Dev, Project-Based Learning, Community
-
-### Content Sections
-
-- **YouTube**: Featured videos and channel links
-- **Tutorials**: Step-by-step coding guides
-- **Projects**: Portfolio of completed work
-- **Blog**: Technical articles and insights
-- **Testimonials**: Community feedback
-
-### Contact & Community
-
-- Contact form for inquiries
-- Newsletter signup
-- Social media links
-
-## 🤝 Contributing
-
-We welcome contributions! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 📞 Contact
-
-**DevWithSunil**
-
-- Website: [devwithsunil.com](https://devwithsunil.vercel.app)
-- YouTube: [@DevWithSunil](https://youtube.com/@DevWithSunilTech)
-- Email: contact@devwithsunil.com
-
----
-
-_Made with ❤️ for the developer community_
+- YouTube: https://www.youtube.com/@DevWithSunilTech
+- Email: devwithsunilyt@gmail.com
+- GitHub: https://github.com/SunilKumarKV
+- LinkedIn: https://www.linkedin.com/in/sunilkumarkv44/

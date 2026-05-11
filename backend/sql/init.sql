@@ -58,3 +58,22 @@ CREATE TABLE IF NOT EXISTS videos (
   featured BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+
+CREATE TABLE IF NOT EXISTS projects (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  description TEXT NOT NULL,
+  tech_stack TEXT[] NOT NULL DEFAULT '{}',
+  github_url TEXT,
+  live_url TEXT,
+  featured BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'published';
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS cover_image TEXT;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
