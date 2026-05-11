@@ -3,23 +3,20 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { blogPosts } from "@/data/blogPosts";
 
 const BlogSection = () => {
-  const { data, isLoading, isError } = useQuery(
-    ["blogPosts"],
-    api.getBlogPosts,
-    {
-      retry: false,
-      staleTime: 1000 * 60 * 5,
-      refetchOnWindowFocus: false,
-    },
-  );
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["blogPosts"],
+    queryFn: api.getBlogPosts,
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 
-  const posts = data?.posts ?? blogPosts;
+  const posts = data?.posts ?? [];
   const fallbackMessage = isError
-    ? "Unable to load the latest articles right now. Showing prepared demo entries."
-    : "Tips, tutorials, and insights on AI & coding";
+    ? "Unable to load articles right now. Please check the API/database connection."
+    : "Real tutorials and articles loaded from your database";
 
   return (
   <section id="blog" className="py-24">
@@ -41,6 +38,11 @@ const BlogSection = () => {
           {[1, 2].map((index) => (
             <div key={index} className="rounded-xl border border-border/50 bg-card p-6 animate-pulse" />
           ))}
+        </div>
+      ) : posts.length === 0 ? (
+        <div className="mx-auto max-w-2xl rounded-xl border border-dashed border-border/70 bg-card/60 p-8 text-center">
+          <h3 className="font-mono text-base font-semibold">No articles published yet</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Create your first blog post from the backend/admin API and it will appear here automatically.</p>
         </div>
       ) : (
         <div className="mx-auto max-w-2xl space-y-4">

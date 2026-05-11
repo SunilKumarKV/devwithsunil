@@ -1,20 +1,11 @@
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://devwithsunil-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 interface ApiOptions extends RequestInit {
   timeout?: number;
 }
 
-class ApiError extends Error {
-  status: number;
-  constructor(message: string, status: number) {
-    super(message);
-    this.name = "ApiError";
-    this.status = status;
-  }
-}
-
-interface BlogPost {
+export interface BlogPost {
+  id?: number;
   slug: string;
   title: string;
   tag: string;
@@ -24,10 +15,37 @@ interface BlogPost {
   readTime: string;
 }
 
-async function request<T>(
-  endpoint: string,
-  options: ApiOptions = {},
-): Promise<T> {
+export interface YoutubeVideo {
+  id: string;
+  title: string;
+  description?: string;
+  thumbnailUrl: string;
+  videoUrl: string;
+  publishedAt?: string;
+}
+
+class ApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
+const normalizeBlogPost = (post: any): BlogPost => ({
+  id: post.id,
+  slug: post.slug,
+  title: post.title,
+  tag: post.tag,
+  date: post.date ? new Date(post.date).toLocaleDateString("en-IN", { month: "short", year: "numeric" }) : "",
+  excerpt: post.excerpt,
+  content: post.content,
+  readTime: typeof post.readTime === "string" ? post.readTime : `${post.read_time ?? post.readTime ?? 1} min read`,
+});
+
+async function request<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
   const { timeout = 10000, ...fetchOptions } = options;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -43,8 +61,8 @@ async function request<T>(
     });
 
     if (!res.ok) {
-      const body = await res.text().catch(() => "Unknown error");
-      throw new ApiError(body, res.status);
+      const body = await res.json().catch(async () => ({ message: await res.text().catch(() => "Unknown error") }));
+      throw new ApiError(body.message || "Request failed", res.status);
     }
 
     return res.json();
@@ -54,25 +72,26 @@ async function request<T>(
 }
 
 export const api = {
-  // Blog
-  getBlogPosts: () => request<{ posts: BlogPost[] }>("/api/blog/posts"),
-  getBlogPost: (slug: string) =>
-    request<{ post: BlogPost }>(`/api/blog/posts/${slug}`),
+  getBlogPosts: async () => {
+    const data = await request<{ posts: any[] }>("/api/blog/posts");
+    return { posts: data.posts.map(normalizeBlogPost) };
+  },
 
-  // Newsletter
+  getBlogPost: async (slug: string) => {
+    const data = await request<{ post: any }>(`/api/blog/posts/${slug}`);
+    return { post: normalizeBlogPost(data.post) };
+  },
+
+  getYoutubeVideos: () => request<{ videos: YoutubeVideo[] }>("/api/videos"),
+
   subscribeNewsletter: (email: string) =>
-    request<{ message: string }>("/api/newsletter/subscribe", {
+    request<{ status: string; message: string }>("/api/newsletter/subscribe", {
       method: "POST",
       body: JSON.stringify({ email }),
     }),
 
-  // Contact
-  sendContactMessage: (data: {
-    name: string;
-    email: string;
-    message: string;
-  }) =>
-    request<{ message: string }>("/api/contact", {
+  sendContactMessage: (data: { name: string; email: string; message: string }) =>
+    request<{ status: string; message?: string }>("/api/contact", {
       method: "POST",
       body: JSON.stringify(data),
     }),

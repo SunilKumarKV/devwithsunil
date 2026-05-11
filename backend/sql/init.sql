@@ -46,3 +46,15 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   read_time INT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS videos (
+  id SERIAL PRIMARY KEY,
+  youtube_id TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  thumbnail_url TEXT NOT NULL,
+  video_url TEXT NOT NULL,
+  published_at TIMESTAMPTZ,
+  featured BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);

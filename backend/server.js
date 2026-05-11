@@ -38,6 +38,7 @@ const courseRoutes = require("./routes/courses");
 const contactRoutes = require("./routes/contact");
 const newsletterRoutes = require("./routes/newsletter");
 const blogRoutes = require("./routes/blog");
+const videoRoutes = require("./routes/videos");
 
 app.use("/api", indexRoute);
 app.use("/api/auth", authRoutes);
@@ -46,6 +47,7 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/blog", blogRoutes);
+app.use("/api/videos", videoRoutes);
 
 if (process.env.NODE_ENV !== "production" || swaggerEnabled) {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

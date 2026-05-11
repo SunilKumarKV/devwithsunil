@@ -3,7 +3,6 @@ import { ArrowLeft, Clock, Tag } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { blogPosts } from "@/data/blogPosts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -11,18 +10,16 @@ import ScrollToTop from "@/components/ScrollToTop";
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
 
-  const { data, isLoading, isError } = useQuery(
-    ["blogPost", slug],
-    () => api.getBlogPost(slug ?? ""),
-    {
-      enabled: Boolean(slug),
-      retry: false,
-      staleTime: 1000 * 60 * 5,
-      refetchOnWindowFocus: false,
-    },
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["blogPost", slug],
+    queryFn: () => api.getBlogPost(slug ?? ""),
+    enabled: Boolean(slug),
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 
-  const post = data?.post ?? blogPosts.find((p) => p.slug === slug);
+  const post = data?.post;
 
   if (isLoading) {
     return (
