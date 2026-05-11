@@ -24,6 +24,16 @@ export interface YoutubeVideo {
   publishedAt?: string;
 }
 
+export interface ProjectItem {
+  id?: number;
+  title: string;
+  slug: string;
+  description: string;
+  techStack: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+}
+
 class ApiError extends Error {
   status: number;
 
@@ -84,6 +94,8 @@ export const api = {
 
   getYoutubeVideos: () => request<{ videos: YoutubeVideo[] }>("/api/videos"),
 
+  getProjects: () => request<{ projects: ProjectItem[] }>("/api/projects"),
+
   subscribeNewsletter: (email: string) =>
     request<{ status: string; message: string }>("/api/newsletter/subscribe", {
       method: "POST",
@@ -105,6 +117,27 @@ export const api = {
   getAdminDashboard: (token: string) =>
     request<{ status: string; data: { stats: Record<string, number>; recentMessages: unknown[]; recentSubscribers: unknown[] } }>("/api/admin/dashboard", {
       headers: { Authorization: `Bearer ${token}` },
+    }),
+
+  createBlogPost: (token: string, data: { slug: string; title: string; tag: string; date: string; excerpt: string; content: string; read_time: number; status: "draft" | "published" }) =>
+    request<{ status: string; data: BlogPost }>("/api/blog/posts", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
+    }),
+
+  createYoutubeVideo: (token: string, data: { youtube_id: string; title: string; description?: string; published_at?: string; featured?: boolean }) =>
+    request<{ status: string; data: YoutubeVideo }>("/api/videos", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
+    }),
+
+  createProject: (token: string, data: { title: string; slug: string; description: string; tech_stack: string[]; github_url?: string; live_url?: string; featured?: boolean }) =>
+    request<{ status: string; data: ProjectItem }>("/api/projects", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
     }),
 
 };

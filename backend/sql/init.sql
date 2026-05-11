@@ -77,3 +77,43 @@ CREATE TABLE IF NOT EXISTS projects (
 ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'published';
 ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS cover_image TEXT;
 ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+-- Real project seed data for public project showcase
+INSERT INTO projects (title, slug, description, tech_stack, github_url, live_url, featured)
+VALUES
+  (
+    'ChessPlay',
+    'chessplay',
+    'Production-focused chess platform with React, Node.js, Socket.IO, MongoDB, authenticated profiles, multiplayer rooms, and Stockfish AI integration.',
+    ARRAY['React', 'Node.js', 'Socket.IO', 'MongoDB'],
+    'https://github.com/SunilKumarKV',
+    'https://chessplay1.vercel.app/',
+    true
+  ),
+  (
+    'SunilCraft Portfolio',
+    'sunilcraft-portfolio',
+    'Personal developer portfolio showcasing frontend projects, React UI work, and full-stack learning journey.',
+    ARRAY['React', 'Vite', 'Tailwind CSS', 'UI/UX'],
+    'https://github.com/SunilKumarKV',
+    'https://sunilcraft.vercel.app/',
+    true
+  ),
+  (
+    'DevWithSunil',
+    'devwithsunil',
+    'Learning, YouTube, tutorials, blogs, newsletter, and contact platform powered by React, Express, and PostgreSQL.',
+    ARRAY['React', 'Express', 'PostgreSQL', 'JWT'],
+    'https://github.com/SunilKumarKV/devwithsunil',
+    'https://devwithsunil.vercel.app/',
+    true
+  )
+ON CONFLICT (slug)
+DO UPDATE SET
+  title = EXCLUDED.title,
+  description = EXCLUDED.description,
+  tech_stack = EXCLUDED.tech_stack,
+  github_url = EXCLUDED.github_url,
+  live_url = EXCLUDED.live_url,
+  featured = EXCLUDED.featured,
+  updated_at = now();

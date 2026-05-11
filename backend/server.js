@@ -39,6 +39,7 @@ const contactRoutes = require("./routes/contact");
 const newsletterRoutes = require("./routes/newsletter");
 const blogRoutes = require("./routes/blog");
 const videoRoutes = require("./routes/videos");
+const projectRoutes = require("./routes/projects");
 const adminRoutes = require("./routes/admin");
 
 app.use("/api", indexRoute);
@@ -49,6 +50,7 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/videos", videoRoutes);
+app.use("/api/projects", projectRoutes);
 app.use("/api/admin", adminRoutes);
 
 if (process.env.NODE_ENV !== "production" || swaggerEnabled) {

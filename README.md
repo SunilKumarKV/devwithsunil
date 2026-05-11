@@ -1,39 +1,31 @@
 # DevWithSunil - AI, Coding & Full Stack Learning Platform
 
-DevWithSunil is a production-focused full-stack learning platform for coding tutorials, AI tools, technical blogs, project showcases, newsletter subscriptions, and developer community updates.
+DevWithSunil is a production-focused full-stack learning platform for YouTube tutorials, technical blogs, project showcases, newsletter subscriptions, contact messages, and admin-managed creator content.
 
-## Live Website
+## Live Links
 
-https://devwithsunil.vercel.app
+- Website: https://devwithsunil.vercel.app
+- YouTube: https://www.youtube.com/@DevWithSunilTech
+- GitHub Repo: https://github.com/SunilKumarKV/devwithsunil
+- Contact Email: devwithsunilyt@gmail.com
 
-## YouTube Channel
+## What This Project Includes
 
-https://www.youtube.com/@DevWithSunilTech
-
-## Contact
-
-devwithsunilyt@gmail.com
-
-## About
-
-DevWithSunil helps beginners and developers learn modern web development through real-world projects, production-level coding tutorials, UI/UX breakdowns, AI tools, and full-stack development workflows.
-
-## Key Features
-
-- YouTube video integration from real backend data
-- Technical blog system with database-powered posts
-- Blog detail pages with dynamic SEO support
-- Project showcase for real portfolio projects
-- Newsletter subscription API
-- Contact form API with email notification support
-- Admin dashboard route and protected admin API
-- SEO component with Open Graph and Twitter metadata
-- Sitemap and robots.txt for search indexing
-- Vercel Analytics integration
-- Responsive dark modern UI
-- PostgreSQL database schema
-- JWT authentication and admin role protection
-- Empty states instead of fake/dummy content
+1. React + TypeScript + Vite frontend
+2. Node.js + Express backend
+3. PostgreSQL database schema
+4. Real project data from database
+5. Blog system with draft/published status
+6. YouTube video management API
+7. Newsletter subscription API
+8. Contact form API with email notification support
+9. Admin login with JWT authentication
+10. Admin dashboard for blogs, videos, and projects
+11. SEO component with Open Graph and Twitter metadata
+12. `sitemap.xml` and `robots.txt`
+13. Google Analytics support
+14. Vercel Analytics support
+15. Production-safe environment variable setup
 
 ## Tech Stack
 
@@ -43,7 +35,7 @@ DevWithSunil helps beginners and developers learn modern web development through
 - TypeScript
 - Vite
 - Tailwind CSS
-- ShadCN UI
+- shadcn/ui components
 - React Router
 - React Query
 - Framer Motion
@@ -56,9 +48,11 @@ DevWithSunil helps beginners and developers learn modern web development through
 - Express.js
 - PostgreSQL
 - JWT Authentication
+- bcrypt password hashing
 - Nodemailer
 - Helmet
 - CORS
+- Express Rate Limit
 - Express Validator
 - Swagger Docs
 
@@ -82,16 +76,22 @@ devwithsunil
 │   ├── middleware
 │   ├── models
 │   ├── routes
+│   ├── scripts
 │   ├── sql
 │   └── server.js
 └── README.md
 ```
 
-## Environment Variables
+## Environment Setup
 
-### Frontend
+Copy the example files:
 
-Create `frontend/.env`:
+```bash
+cp frontend/.env.example frontend/.env
+cp backend/.env.example backend/.env
+```
+
+### Frontend `.env`
 
 ```env
 VITE_API_URL=http://localhost:5000
@@ -100,20 +100,22 @@ VITE_YOUTUBE_URL=https://www.youtube.com/@DevWithSunilTech
 VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-### Backend
-
-Create `backend/.env`:
+### Backend `.env`
 
 ```env
 NODE_ENV=development
 PORT=5000
 APP_NAME=DevWithSunil
 CORS_ORIGIN=http://localhost:5173
+FRONTEND_URL=http://localhost:5173
 DATABASE_URL=postgresql://username:password@host:5432/devwithsunil
-JWT_SECRET=replace_with_a_long_random_secret
+JWT_SECRET=replace_with_a_very_long_random_secret_minimum_32_chars
 JWT_EXPIRATION=4h
-ALLOW_PUBLIC_REGISTRATION=true
+ALLOW_PUBLIC_REGISTRATION=false
 SWAGGER_ENABLED=true
+ADMIN_NAME=Sunil Kumar
+ADMIN_EMAIL=devwithsunilyt@gmail.com
+ADMIN_PASSWORD=your_admin_password_here
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_SECURE=false
@@ -121,6 +123,8 @@ EMAIL_USER=devwithsunilyt@gmail.com
 EMAIL_PASS=your_google_app_password
 EMAIL_TO=devwithsunilyt@gmail.com
 ```
+
+Important: do not commit real passwords to GitHub. For Gmail email sending, `EMAIL_PASS` must be a Google App Password, not your normal Gmail login password.
 
 ## Installation
 
@@ -134,9 +138,33 @@ cd ../backend && npm install
 
 ## Database Setup
 
+Run the schema and real project seed data:
+
 ```bash
 cd backend
 psql "$DATABASE_URL" -f sql/init.sql
+```
+
+## Create Admin Account
+
+After updating `backend/.env`, run:
+
+```bash
+cd backend
+npm run seed:admin
+```
+
+Admin login page:
+
+```txt
+http://localhost:5173/admin
+```
+
+Use the email and password from your local `backend/.env`:
+
+```txt
+ADMIN_EMAIL=devwithsunilyt@gmail.com
+ADMIN_PASSWORD=your_admin_password_here
 ```
 
 ## Run Locally
@@ -147,8 +175,8 @@ From the root folder:
 npm run dev
 ```
 
-Frontend: `http://localhost:5173`  
-Backend: `http://localhost:5000/api`
+Frontend: http://localhost:5173  
+Backend: http://localhost:5000/api
 
 ## Important Routes
 
@@ -166,10 +194,23 @@ Backend: `http://localhost:5000/api`
 - `GET /api/blog/posts`
 - `POST /api/blog/posts` - admin only
 - `GET /api/videos`
+- `POST /api/videos` - admin only
+- `GET /api/projects`
+- `POST /api/projects` - admin only
 - `POST /api/contact`
 - `POST /api/newsletter/subscribe`
 - `GET /api/admin/dashboard` - admin only
 
+## Admin Dashboard Features
+
+1. Secure JWT login
+2. Dashboard stats
+3. Create blog posts
+4. Add YouTube videos
+5. Add projects
+6. View subscriber/message counts
+7. Logout support
+8. Database-backed public content
 
 ## Deployment
 
@@ -179,6 +220,7 @@ Backend: `http://localhost:5000/api`
 - Framework: Vite
 - Build command: `npm run build`
 - Output directory: `dist`
+- Add frontend environment variables in Vercel settings
 
 ### Backend on Render/Railway
 
@@ -186,19 +228,16 @@ Backend: `http://localhost:5000/api`
 - Start command: `npm start`
 - Add PostgreSQL database URL
 - Add all backend environment variables
+- Run `sql/init.sql`
+- Run `npm run seed:admin`
 
-## Roadmap
+## SEO & Analytics
 
-- Full CRUD admin pages
-- Markdown blog editor
-- YouTube API auto-sync
-- Project CRUD management
-- Newsletter email campaigns
-- Blog category and search filters
-- Analytics dashboard
-- Course/tutorial module
-- AI-powered blog summaries
-- Custom domain `devwithsunil.com`
+- SEO component: `frontend/src/components/SEO.tsx`
+- Sitemap: `frontend/public/sitemap.xml`
+- Robots: `frontend/public/robots.txt`
+- Google Analytics: set `VITE_GA_MEASUREMENT_ID`
+- Vercel Analytics: enabled in `frontend/src/App.tsx`
 
 ## Author
 

@@ -1,15 +1,15 @@
 {
   "name": "devwithsunil",
   "version": "1.0.0",
-  "description": "",
+  "description": "DevWithSunil full-stack learning platform",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-  "frontend": "cd frontend && npm run dev",
-  "backend": "cd backend && npm run dev",
-  "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-  "build": "cd frontend && npm run build",
-  "start": "cd backend && npm start"
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "seed:admin": "cd backend && npm run seed:admin"
   },
   "repository": {
     "type": "git",
