@@ -2,12 +2,14 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const { port, corsOrigin, swaggerEnabled, nodeEnv } = require("./config");
+const { port, swaggerEnabled } = require("./config");
+const { corsOptions, allowedOrigins } = require("./config/cors");
 const rateLimiter = require("./middleware/rateLimiter");
 const errorHandler = require("./middleware/errorHandler");
 const logger = require("./utils/logger");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
+const ensureAdminFromEnv = require("./utils/ensureAdmin");
 
 // Validate environment variables
 require("./config/environment");
@@ -16,48 +18,12 @@ const app = express();
 
 app.use(helmet());
 
-const parseAllowedOrigins = (originValue) => {
-  if (!originValue) return [];
-  return originValue
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-};
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 
-const developmentOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "http://localhost:8080",
-  "http://127.0.0.1:8080",
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-];
-
-const allowedOrigins = Array.from(
-  new Set([
-    ...parseAllowedOrigins(corsOrigin),
-    ...(nodeEnv === "production" ? [] : developmentOrigins),
-  ]),
-);
-
-app.use(
-  cors({
-    origin(origin, callback) {
-      // Allow server-to-server requests, curl/Postman, and same-origin requests with no Origin header.
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error(`CORS blocked origin: ${origin}`));
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 204,
-  }),
-);
+if (process.env.NODE_ENV !== "test") {
+  console.log("Allowed CORS origins:", allowedOrigins.join(", "));
+}
 
 app.use(rateLimiter);
 app.use(express.json({ limit: "10kb" }));
@@ -115,9 +81,15 @@ process.on("uncaughtException", (err) => {
 });
 
 if (process.env.NODE_ENV !== "test") {
-  app.listen(port, () => {
-    console.log(`DevWithSunil API running on port ${port}`);
-  });
+  ensureAdminFromEnv()
+    .catch((error) => {
+      console.error("⚠️ Admin auto-seed failed:", error.message);
+    })
+    .finally(() => {
+      app.listen(port, () => {
+        console.log(`DevWithSunil API running on port ${port}`);
+      });
+    });
 }
 
 module.exports = app;

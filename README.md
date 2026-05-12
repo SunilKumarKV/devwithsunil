@@ -248,3 +248,38 @@ DevWithSunil
 - Email: devwithsunilyt@gmail.com
 - GitHub: https://github.com/SunilKumarKV
 - LinkedIn: https://www.linkedin.com/in/sunilkumarkv44/
+
+## Admin Login and CORS Fix Notes
+
+Admin URL:
+
+- Local: `http://localhost:5173/admin` or `http://localhost:5174/admin`
+- Production: `https://devwithsunil.vercel.app/admin`
+
+Required backend environment variables:
+
+```env
+ADMIN_EMAIL=devwithsunilyt@gmail.com
+ADMIN_PASSWORD=your_admin_password_here
+FRONTEND_URL=https://devwithsunil.vercel.app
+CORS_ORIGIN=http://localhost:5173,http://localhost:5174,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:8080,https://devwithsunil.vercel.app
+```
+
+Required frontend environment variables:
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+For production frontend on Vercel, set `VITE_API_URL` to your deployed backend URL, for example:
+
+```env
+VITE_API_URL=https://your-backend-url.onrender.com
+```
+
+The backend now automatically creates/updates the admin user on startup when `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set. You can also manually run:
+
+```bash
+npm run seed:admin
+```
+
