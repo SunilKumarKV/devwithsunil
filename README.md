@@ -312,3 +312,33 @@ CORS_ORIGIN=https://devwithsunil.vercel.app,http://localhost:5173,http://localho
 ```
 
 Restart the Render backend after changing environment variables.
+
+## Latest Admin Blog Upgrade
+
+This version upgrades the admin panel blog workflow so saved blogs are stored in PostgreSQL and can be managed from `/admin`.
+
+### Implemented
+
+1. Blog draft/publish status.
+2. Markdown-style rich text content editor with preview.
+3. Thumbnail/cover image URL field.
+4. SEO title field.
+5. SEO description field.
+6. Schedule publish date/time field.
+7. Featured blog toggle.
+8. View count support.
+9. Like count support.
+10. Admin blog search.
+11. Admin blog status filter.
+12. Edit existing blog.
+13. Delete blog.
+14. Public blog list only shows published blogs after their scheduled time.
+15. Admin blog manager shows drafts, published posts, views, likes, and schedule status.
+
+### Important
+
+If a blog is saved as `draft`, it appears only in the admin panel. To show it on the public `/blog` page, set status to `published`. If `scheduled_at` is a future date, it will appear only after that date/time.
+
+### Database Migration
+
+The backend automatically adds the new blog columns on startup through `utils/setupDatabase.js`. For production, redeploy or restart the Render backend after pushing this version.

@@ -117,3 +117,12 @@ DO UPDATE SET
   live_url = EXCLUDED.live_url,
   featured = EXCLUDED.featured,
   updated_at = now();
+
+
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS seo_title TEXT;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS seo_description TEXT;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS scheduled_at TIMESTAMPTZ;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS featured BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS view_count INT NOT NULL DEFAULT 0;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS like_count INT NOT NULL DEFAULT 0;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS tags TEXT[] NOT NULL DEFAULT '{}';
