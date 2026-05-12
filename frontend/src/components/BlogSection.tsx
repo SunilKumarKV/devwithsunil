@@ -7,7 +7,7 @@ import { api } from "@/lib/api";
 const BlogSection = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["blogPosts"],
-    queryFn: api.getBlogPosts,
+    queryFn: () => api.getBlogPosts(),
     retry: false,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
@@ -16,7 +16,7 @@ const BlogSection = () => {
   const posts = data?.posts ?? [];
   const fallbackMessage = isError
     ? "Unable to load articles right now. Please check the API/database connection."
-    : "Real tutorials and articles loaded from your database";
+    : "Real tutorials and articles loaded from your production database";
 
   return (
   <section id="blog" className="py-24">
@@ -42,7 +42,7 @@ const BlogSection = () => {
       ) : posts.length === 0 ? (
         <div className="mx-auto max-w-2xl rounded-xl border border-dashed border-border/70 bg-card/60 p-8 text-center">
           <h3 className="font-mono text-base font-semibold">No articles published yet</h3>
-          <p className="mt-2 text-sm text-muted-foreground">No published posts were returned from the API yet. Publish one from the admin panel, then refresh this page. If you already published, redeploy/restart the backend so database migrations and starter content run.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Published posts are loading from the backend. If this appears after adding a blog, check VITE_API_URL and redeploy the latest frontend build.</p>
         </div>
       ) : (
         <div className="mx-auto max-w-2xl space-y-4">

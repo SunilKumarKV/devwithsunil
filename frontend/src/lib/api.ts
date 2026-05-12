@@ -90,6 +90,40 @@ class ApiError extends Error {
   }
 }
 
+
+const normalizeYoutubeVideo = (video: any): YoutubeVideo => ({
+  id: video.id,
+  youtube_id: video.youtube_id,
+  youtubeId: video.youtube_id ?? video.youtubeId,
+  title: video.title,
+  description: video.description,
+  thumbnailUrl: video.thumbnail_url ?? video.thumbnailUrl ?? (video.youtube_id ? `https://img.youtube.com/vi/${video.youtube_id}/hqdefault.jpg` : undefined),
+  thumbnail_url: video.thumbnail_url,
+  videoUrl: video.video_url ?? video.videoUrl ?? (video.youtube_id ? `https://www.youtube.com/watch?v=${video.youtube_id}` : undefined),
+  video_url: video.video_url,
+  publishedAt: video.published_at ?? video.publishedAt,
+  published_at: video.published_at,
+  featured: Boolean(video.featured),
+  createdAt: video.created_at ?? video.createdAt,
+  created_at: video.created_at,
+});
+
+const normalizeProject = (project: any): ProjectItem => ({
+  id: project.id,
+  title: project.title,
+  slug: project.slug,
+  description: project.description,
+  techStack: Array.isArray(project.tech_stack) ? project.tech_stack : Array.isArray(project.techStack) ? project.techStack : [],
+  tech_stack: Array.isArray(project.tech_stack) ? project.tech_stack : [],
+  githubUrl: project.github_url ?? project.githubUrl,
+  github_url: project.github_url,
+  liveUrl: project.live_url ?? project.liveUrl,
+  live_url: project.live_url,
+  featured: Boolean(project.featured),
+  createdAt: project.created_at ?? project.createdAt,
+  created_at: project.created_at,
+});
+
 const normalizeBlogPost = (post: any): BlogPost => ({
   id: post.id,
   slug: post.slug,
@@ -164,13 +198,16 @@ export const api = {
 
   likeBlogPost: (slug: string) => request<{ status: string; like_count: number }>(`/api/blog/posts/${slug}/like`, { method: "POST" }),
 
-  getYoutubeVideos: () => request<{ videos: YoutubeVideo[] }>("/api/videos"),
+  getYoutubeVideos: async () => {
+    const data = await request<{ videos: any[] }>("/api/videos");
+    return { videos: data.videos.map(normalizeYoutubeVideo) };
+  },
 
   getAdminVideos: (token: string, search = "") => {
     const query = search ? `?search=${encodeURIComponent(search)}` : "";
-    return request<{ status: string; data: YoutubeVideo[] }>(`/api/videos/admin/all${query}`, {
+    return request<{ status: string; data: any[] }>(`/api/videos/admin/all${query}`, {
       headers: { Authorization: `Bearer ${token}` },
-    });
+    }).then((data) => ({ ...data, data: data.data.map(normalizeYoutubeVideo) }));
   },
 
   deleteYoutubeVideo: (token: string, id: string | number) =>
@@ -179,13 +216,16 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` },
     }),
 
-  getProjects: () => request<{ projects: ProjectItem[] }>("/api/projects"),
+  getProjects: async () => {
+    const data = await request<{ projects: any[] }>("/api/projects");
+    return { projects: data.projects.map(normalizeProject) };
+  },
 
   getAdminProjects: (token: string, search = "") => {
     const query = search ? `?search=${encodeURIComponent(search)}` : "";
-    return request<{ status: string; data: ProjectItem[] }>(`/api/projects/admin/all${query}`, {
+    return request<{ status: string; data: any[] }>(`/api/projects/admin/all${query}`, {
       headers: { Authorization: `Bearer ${token}` },
-    });
+    }).then((data) => ({ ...data, data: data.data.map(normalizeProject) }));
   },
 
   deleteProject: (token: string, id: string | number) =>
