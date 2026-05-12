@@ -115,7 +115,7 @@ export const api = {
     }),
 
   getAdminDashboard: (token: string) =>
-    request<{ status: string; data: { stats: Record<string, number>; recentMessages: unknown[]; recentSubscribers: unknown[] } }>("/api/admin/dashboard", {
+    request<{ status: string; data: { stats: Record<string, number>; recentMessages: unknown[]; recentSubscribers: unknown[]; recentBlogs: unknown[]; recentVideos: unknown[]; recentProjects: unknown[] } }>("/api/admin/dashboard", {
       headers: { Authorization: `Bearer ${token}` },
     }),
 

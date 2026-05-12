@@ -10,6 +10,7 @@ const logger = require("./utils/logger");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 const ensureAdminFromEnv = require("./utils/ensureAdmin");
+const setupDatabase = require("./utils/setupDatabase");
 
 // Validate environment variables
 require("./config/environment");
@@ -81,9 +82,10 @@ process.on("uncaughtException", (err) => {
 });
 
 if (process.env.NODE_ENV !== "test") {
-  ensureAdminFromEnv()
+  setupDatabase()
+    .then(() => ensureAdminFromEnv())
     .catch((error) => {
-      console.error("⚠️ Admin auto-seed failed:", error.message);
+      console.error("⚠️ Startup database/admin setup failed:", error.message);
     })
     .finally(() => {
       app.listen(port, () => {

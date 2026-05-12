@@ -283,3 +283,32 @@ The backend now automatically creates/updates the admin user on startup when `AD
 npm run seed:admin
 ```
 
+
+
+## Latest production fixes
+
+- Admin dashboard API now verifies/creates the required PostgreSQL tables on backend startup.
+- `/api/admin/dashboard` returns real counts plus recent blogs, videos, projects, newsletter subscribers, and contact messages.
+- Admin panel now shows database-backed lists instead of only static cards.
+- Vercel Analytics is disabled by default unless `VITE_ENABLE_VERCEL_ANALYTICS=true` is set after enabling Web Analytics in Vercel.
+- Vercel rewrites now exclude `/_vercel/*`, favicon, robots, sitemap, manifest, and assets so analytics/static files are not rewritten to `index.html`.
+
+### Required production environment variables
+
+Frontend on Vercel:
+
+```env
+VITE_API_URL=https://devwithsunil-backend.onrender.com
+VITE_ENABLE_VERCEL_ANALYTICS=false
+VITE_GA_MEASUREMENT_ID=
+```
+
+Backend on Render:
+
+```env
+ADMIN_EMAIL=devwithsunilyt@gmail.com
+ADMIN_PASSWORD=your_secure_admin_password
+CORS_ORIGIN=https://devwithsunil.vercel.app,http://localhost:5173,http://localhost:5174,http://localhost:8080
+```
+
+Restart the Render backend after changing environment variables.
