@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const { port, corsOrigin, swaggerEnabled } = require("./config");
+const { port, corsOrigin, swaggerEnabled, nodeEnv } = require("./config");
 const rateLimiter = require("./middleware/rateLimiter");
 const errorHandler = require("./middleware/errorHandler");
 const logger = require("./utils/logger");
@@ -15,12 +15,50 @@ require("./config/environment");
 const app = express();
 
 app.use(helmet());
+
+const parseAllowedOrigins = (originValue) => {
+  if (!originValue) return [];
+  return originValue
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+};
+
+const developmentOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+];
+
+const allowedOrigins = Array.from(
+  new Set([
+    ...parseAllowedOrigins(corsOrigin),
+    ...(nodeEnv === "production" ? [] : developmentOrigins),
+  ]),
+);
+
 app.use(
   cors({
-    origin: corsOrigin,
+    origin(origin, callback) {
+      // Allow server-to-server requests, curl/Postman, and same-origin requests with no Origin header.
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 204,
   }),
 );
+
 app.use(rateLimiter);
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true }));

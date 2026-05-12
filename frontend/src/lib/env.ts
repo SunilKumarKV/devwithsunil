@@ -12,16 +12,6 @@ export const validateEnvironment = () => {
         `Using default values where available.`,
     );
   }
-
-  // Log current environment for debugging
-  if (import.meta.env.DEV) {
-    console.log("Environment variables:", {
-      VITE_API_URL: import.meta.env.VITE_API_URL || "Using default backend URL",
-      MODE: import.meta.env.MODE,
-      DEV: import.meta.env.DEV,
-      PROD: import.meta.env.PROD,
-    });
-  }
 };
 
 // Validate on module load
