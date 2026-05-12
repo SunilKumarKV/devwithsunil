@@ -18,8 +18,8 @@ const baseBlog = (): BlogPayload => ({
   excerpt: "",
   content: "",
   read_time: 5,
-  status: "draft",
-  cover_image: "",
+  status: "published",
+  cover_image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80",
   seo_title: "",
   seo_description: "",
   scheduled_at: "",
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
       else await api.createBlogPost(token, payload);
       setBlog(baseBlog());
       setEditingBlogId(null);
-      setSuccess(editingBlogId ? "Blog updated successfully. Dashboard and blog manager refreshed." : "Blog saved successfully. Dashboard and blog manager refreshed.");
+      setSuccess(payload.status === "published" ? "Blog saved and published. It will appear on the public blog page after refresh." : "Blog saved as draft. It appears in admin only until you publish it.");
       await refreshAdminData();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save blog post");

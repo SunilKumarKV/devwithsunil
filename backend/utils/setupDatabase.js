@@ -105,7 +105,61 @@ const setupDatabase = async () => {
       updated_at = now()
   `);
 
-  logger.info('Database tables verified');
+  await pool.query(`
+    INSERT INTO blog_posts (
+      slug, title, tag, tags, date, excerpt, content, read_time, status,
+      cover_image, seo_title, seo_description, scheduled_at, featured
+    )
+    SELECT
+      'building-production-full-stack-apps-react-nodejs',
+      'Building Production-Level Full Stack Applications with React & Node.js',
+      'Full Stack Development',
+      ARRAY['React', 'Node.js', 'Production Apps', 'DevWithSunil'],
+      CURRENT_DATE,
+      'Learn how production-level full stack applications are built using React, Node.js, PostgreSQL, Tailwind CSS, real database APIs, admin dashboards, SEO, and deployment workflows.',
+      '# Building Production-Level Full Stack Applications with React & Node.js
+
+Modern web development is no longer only about creating simple pages. A production-ready project needs clean UI, real APIs, a secure backend, database-driven content, SEO, analytics, deployment, and admin tools.
+
+## What production-ready means
+
+A production app should have reusable frontend components, backend validation, database persistence, authentication, loading states, error states, responsive UI, SEO metadata, and deployment configuration.
+
+## DevWithSunil stack
+
+I use React, Vite, TypeScript, Tailwind CSS, Node.js, Express, PostgreSQL, JWT auth, and Vercel/Render deployment.
+
+## Real projects
+
+DevWithSunil includes blogs, tutorials, YouTube videos, projects, newsletter, contact messages, and an admin dashboard.
+
+## Final thought
+
+The best way to grow as a developer is to build, publish, debug, and improve real projects consistently.',
+      8,
+      'published',
+      'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80',
+      'Building Production-Level Full Stack Apps with React & Node.js',
+      'Learn how to build production-level full stack applications with React, Node.js, PostgreSQL, admin dashboards, SEO, and deployment workflows.',
+      NULL,
+      true
+    WHERE NOT EXISTS (SELECT 1 FROM blog_posts)
+  `);
+
+  await pool.query(`
+    INSERT INTO videos (youtube_id, title, description, thumbnail_url, video_url, published_at, featured)
+    SELECT
+      'channel-intro-devwithsunil',
+      'Welcome to DevWithSunil - Full Stack, AI, Coding & Real Projects',
+      'Starter featured video placeholder. Replace the YouTube ID from the admin panel after uploading your first channel video.',
+      'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+      'https://www.youtube.com/@DevWithSunilTech',
+      now(),
+      true
+    WHERE NOT EXISTS (SELECT 1 FROM videos)
+  `);
+
+  logger.info('Database tables verified and starter content ensured');
 };
 
 module.exports = setupDatabase;

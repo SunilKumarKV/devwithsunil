@@ -42,7 +42,7 @@ const BlogSection = () => {
       ) : posts.length === 0 ? (
         <div className="mx-auto max-w-2xl rounded-xl border border-dashed border-border/70 bg-card/60 p-8 text-center">
           <h3 className="font-mono text-base font-semibold">No articles published yet</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Create your first blog post from the backend/admin API and it will appear here automatically.</p>
+          <p className="mt-2 text-sm text-muted-foreground">No published posts were returned from the API yet. Publish one from the admin panel, then refresh this page. If you already published, redeploy/restart the backend so database migrations and starter content run.</p>
         </div>
       ) : (
         <div className="mx-auto max-w-2xl space-y-4">
