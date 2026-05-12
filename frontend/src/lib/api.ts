@@ -27,12 +27,20 @@ export interface BlogPost {
 }
 
 export interface YoutubeVideo {
-  id: string;
+  id?: string | number;
+  youtube_id?: string;
+  youtubeId?: string;
   title: string;
   description?: string;
-  thumbnailUrl: string;
-  videoUrl: string;
+  thumbnailUrl?: string;
+  thumbnail_url?: string;
+  videoUrl?: string;
+  video_url?: string;
   publishedAt?: string;
+  published_at?: string;
+  featured?: boolean;
+  createdAt?: string;
+  created_at?: string;
 }
 
 export interface ProjectItem {
@@ -40,9 +48,15 @@ export interface ProjectItem {
   title: string;
   slug: string;
   description: string;
-  techStack: string[];
+  techStack?: string[];
+  tech_stack?: string[];
   githubUrl?: string;
+  github_url?: string;
   liveUrl?: string;
+  live_url?: string;
+  featured?: boolean;
+  createdAt?: string;
+  created_at?: string;
 }
 
 export type BlogPayload = {
@@ -148,7 +162,33 @@ export const api = {
 
   getYoutubeVideos: () => request<{ videos: YoutubeVideo[] }>("/api/videos"),
 
+  getAdminVideos: (token: string, search = "") => {
+    const query = search ? `?search=${encodeURIComponent(search)}` : "";
+    return request<{ status: string; data: YoutubeVideo[] }>(`/api/videos/admin/all${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+
+  deleteYoutubeVideo: (token: string, id: string | number) =>
+    request<{ status: string; message: string }>(`/api/videos/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+
   getProjects: () => request<{ projects: ProjectItem[] }>("/api/projects"),
+
+  getAdminProjects: (token: string, search = "") => {
+    const query = search ? `?search=${encodeURIComponent(search)}` : "";
+    return request<{ status: string; data: ProjectItem[] }>(`/api/projects/admin/all${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+
+  deleteProject: (token: string, id: string | number) =>
+    request<{ status: string; message: string }>(`/api/projects/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 
   subscribeNewsletter: (email: string) =>
     request<{ status: string; message: string }>("/api/newsletter/subscribe", {

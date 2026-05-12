@@ -14,6 +14,15 @@ exports.getFeaturedVideos = async (req, res, next) => {
   }
 };
 
+exports.getAdminVideos = async (req, res, next) => {
+  try {
+    const result = await videoModel.findAllForAdmin({ search: req.query.search || '' });
+    return res.json({ status: 'success', data: result.rows });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.createVideo = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -28,11 +37,23 @@ exports.createVideo = async (req, res, next) => {
       description: description ? xss(description) : null,
       thumbnail_url: thumbnail_url || youtubeThumbnail(youtube_id),
       video_url: video_url || youtubeUrl(youtube_id),
-      published_at,
-      featured,
+      published_at: published_at || null,
+      featured: Boolean(featured),
     });
 
     return res.status(201).json({ status: 'success', data: result.rows[0] });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteVideo = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return res.status(400).json({ status: 'error', message: 'Invalid video ID' });
+    const result = await videoModel.delete(id);
+    if (!result.rows.length) return res.status(404).json({ status: 'error', message: 'Video not found' });
+    return res.json({ status: 'success', message: 'Video deleted' });
   } catch (err) {
     next(err);
   }

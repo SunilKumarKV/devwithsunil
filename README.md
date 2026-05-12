@@ -342,3 +342,48 @@ If a blog is saved as `draft`, it appears only in the admin panel. To show it on
 ### Database Migration
 
 The backend automatically adds the new blog columns on startup through `utils/setupDatabase.js`. For production, redeploy or restart the Render backend after pushing this version.
+
+## Latest Admin Production Fixes
+
+This version upgrades the admin panel so content created in admin is visible immediately in the correct dashboard sections.
+
+### Implemented
+
+1. Added admin video listing API: `GET /api/videos/admin/all`.
+2. Added admin project listing API: `GET /api/projects/admin/all`.
+3. Added video delete API: `DELETE /api/videos/:id`.
+4. Added project delete API: `DELETE /api/projects/:id`.
+5. Updated video create API to upsert by YouTube ID and refresh `updated_at`.
+6. Updated project create API to upsert by slug and refresh `updated_at`.
+7. Added video manager in admin panel with search, open, and delete actions.
+8. Added project manager in admin panel with search, live link, and delete actions.
+9. Added recent blogs to the admin dashboard overview.
+10. Fixed admin dashboard refresh after blog/video/project save or delete.
+11. Invalidated all affected React Query caches after admin mutations.
+12. Improved blog save payload defaults for slug, SEO title, SEO description, and scheduled publish.
+13. Added featured toggles for videos and projects.
+14. Kept public site clean: only featured videos/projects and published blogs show publicly.
+15. Verified frontend production build and frontend tests.
+16. Verified backend tests.
+
+### Production Environment Notes
+
+Frontend Vercel:
+
+```env
+VITE_API_URL=https://devwithsunil-backend.onrender.com
+VITE_ENABLE_VERCEL_ANALYTICS=false
+```
+
+Backend Render:
+
+```env
+NODE_ENV=production
+DATABASE_URL=your_postgres_url
+JWT_SECRET=your_long_secret
+ADMIN_EMAIL=devwithsunilyt@gmail.com
+ADMIN_PASSWORD=your_admin_password
+CORS_ORIGIN=https://devwithsunil.vercel.app,http://localhost:5173,http://localhost:5174,http://localhost:8080
+```
+
+After changing environment variables, redeploy both frontend and backend.
